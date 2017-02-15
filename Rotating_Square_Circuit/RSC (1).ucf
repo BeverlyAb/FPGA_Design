@@ -44,7 +44,7 @@ NET "an<2>"  LOC = "F14";
 NET "an<3>"  LOC = "E13";
 
 # 7-segment led segments
-#NET "sseg<7>"  LOC = "P16"; # decimal point
+NET "sseg<7>"  LOC = "P16"; # decimal point
 NET "sseg<6>"  LOC = "E14"; # segment a
 NET "sseg<5>"  LOC = "G13"; # segment b
 NET "sseg<4>"  LOC = "N15"; # segment c
