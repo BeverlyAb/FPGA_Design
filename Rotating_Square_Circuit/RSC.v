@@ -11,23 +11,24 @@ module RSC(
 	output reg [7:0] sseg
     );
 	 // 8 different states
-	 localparam [2:0]	ZERO_BOT	= 3'd0,
+	 localparam [2:0]	
+							ZERO_BOT	= 3'd0,
 							ONE_BOT 	= 3'd1,
-							TWO_BOT	= 3'd2,
-							THREE_BOT= 3'd3,
+							TWO_BOT		= 3'd2,
+							THREE_BOT	= 3'd3,
 							ZERO_TOP	= 3'd4,
 							ONE_TOP 	= 3'd5,
-							TWO_TOP	= 3'd6,
-							THREE_TOP= 3'd7;
+							TWO_TOP		= 3'd6,
+							THREE_TOP	= 3'd7;
 	// 4 sseg display and 1 off, where none of the sseg displays its value
-	localparam [3:0]	DISP_0 = 4'b1110,
+	localparam [3:0]				DISP_0 = 4'b1110,
 							DISP_1 = 4'b1101,
 							DISP_2 = 4'b1011,
 							DISP_3 = 4'b0111,
-							OFF =		4'b1111;
+							OFF    = 4'b1111;
 	// display for square top or bottom
 	localparam [7:0]	BOT = 8'b11100010,
-							TOP = 8'b10011100;
+				TOP = 8'b10011100;
 
 	// internal signals						
 	reg [2:0] state_reg, state_next;
