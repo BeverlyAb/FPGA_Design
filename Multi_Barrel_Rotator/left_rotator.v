@@ -1,16 +1,15 @@
 `timescale 1ns / 1ps
 // Left rotates the value d_in based on the bit_amount. The output is d_out.
 /////////////////////////////////////////////////////////////////
-module left_rotator(
-	output reg [7:0] d_out,				// 8'b
+module left_rotator
+(
+	output reg [7:0] d_out,			// 8'b
 	input wire [7:0] d_in,
 	input wire [2:0] bit_amount	// 3'b, enough to specify #'b to rotate
     );
-	
-	//In Verilog you can't use a variable as the end of range.
-	// https://verificationacademy.com/forums/systemverilog/range-must-be-bounded-constant-expressions
 	//assign d_out = {d_in[bit_amount +: 0], d_in[7+: 8]};	
 	
+
 	always @(*) begin
 		case(bit_amount)
 			3'd1: d_out = {d_in[6:0], d_in[7]};

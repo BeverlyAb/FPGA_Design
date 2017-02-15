@@ -1,7 +1,8 @@
 `timescale 1ns / 1ps
  
 /// Right rotates the value d_in based on the bit_amount. The output is d_out.
-/////////////////////////////////////////////////////////////////module right_rotator(
+/////////////////////////////////////////////////////////////////
+module right_rotator(
 	output reg [7:0] d_out,				// 8'b
 	input wire [7:0] d_in,
 	input wire [2:0] bit_amount	// 3'b, enough to specify #'b to rotate
