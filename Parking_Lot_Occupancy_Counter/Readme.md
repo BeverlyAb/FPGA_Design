@@ -1,5 +1,5 @@
 Parking Lot Occupancy Counter
 
-This applies a Moore Machine with 8 states a counter, and a mux-hexidecimal display
-in order to count how many cars are inside a parking garage. 
+This applies a Moore Machine with 8 states, a counter, and a mux-hexadecimal display
+in order to indicate cars entering, (increments count) or cars leaving (decrements count) a parking garage. The count is then displayed as a hexadecimal value from 0 to F. 
 
