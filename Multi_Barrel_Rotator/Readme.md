@@ -3,4 +3,3 @@ The number of bits to rotate is set by amount, while lr dictates whether to perf
 
 More information is on the lab report. 
 
-*Feel free to use my work as a reference, but please refrain from copying code to serve as assignments in computer science related courses.*
