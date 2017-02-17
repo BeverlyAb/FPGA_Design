@@ -15,9 +15,9 @@ module Occupancy_Counter(
 		else begin
 			case(inc_dec)
 				2'b10:	if (count != 15) 
-								count <= count + 1;
+						count <= count + 1;
 				2'b01:	if (count != 0)
-								count <= count - 1;
+						count <= count - 1;
 			default: count <= count;
 			endcase
 		end
