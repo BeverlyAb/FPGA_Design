@@ -1,4 +1,6 @@
- This behaves as a Moore machine displaying a square rotating every clock cycle (clk) across the four seven segment (sseg) display. 
+#Rotating Square Circuit
+
+This behaves as a Moore machine, which displays a rotating square that iterates across the four seven segment (sseg) displays every clock cycle (clk). 
 
  en halts or resumes the process.
  cw, makes the square rotate clockwise or counter-clockwise. an enables one 
