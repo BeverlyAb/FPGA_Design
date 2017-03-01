@@ -5,4 +5,3 @@
  of the four sseg outputs its value. Using this Finite State Machine (FSM), the
  square retains its position even after the en or cw switch is toggled. 
 
-*Feel free to use my work as a reference, but please refrain from copying code to serve as assignments in computer science related courses.*
