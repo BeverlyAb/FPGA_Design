@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2017-02-14T21:09:38</DateModified>
+  <DateModified>2017-02-21T21:50:48</DateModified>
   <ModuleName>Bidirection_Rotation</ModuleName>
   <SummaryTimeStamp>Unknown</SummaryTimeStamp>
   <SavedFilePath>C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator/iseconfig/Bidirection_Rotation.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator</ImplementationReportsDirectory>
+  <ImplementationReportsDirectory>C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator\</ImplementationReportsDirectory>
   <DateInitialized>2017-02-14T21:09:37</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>

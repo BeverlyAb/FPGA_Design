@@ -8,7 +8,43 @@
 <!-- Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.    -->
 
 <messages>
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator/Barrel_Rotator.v&quot; into library work</arg>
+</msg>
+
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator/Barrel_Rotator_testbench.v&quot; into library work</arg>
+</msg>
+
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator/Bidirection_Rotation.v&quot; into library work</arg>
+</msg>
+
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator/Bidirection_Rotation_testbench.v&quot; into library work</arg>
+</msg>
+
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator/FPGA_Barrel_Rotator.v&quot; into library work</arg>
+</msg>
+
 <msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator/left_rotator.v&quot; into library work</arg>
+</msg>
+
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator/left_rotator_testbench.v&quot; into library work</arg>
+</msg>
+
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator/mux_2_to_1.v&quot; into library work</arg>
+</msg>
+
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator/mux_2_to_1_test.v&quot; into library work</arg>
+</msg>
+
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator/reverse.v&quot; into library work</arg>
+</msg>
+
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator/reverse_testbench.v&quot; into library work</arg>
+</msg>
+
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator/right_rotator.v&quot; into library work</arg>
+</msg>
+
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Beverly/Documents/GitHub/FPGA_Design/Multi_Barrel_Rotator/right_rotator_testbench.v&quot; into library work</arg>
 </msg>
 
 </messages>
