@@ -1,4 +1,4 @@
-//Listing 8.3
+//UART_tx
 module uart_tx
    #(
      parameter DBIT = 8,     // # DATA bits
@@ -9,15 +9,17 @@ module uart_tx
     input wire tx_START, s_tick, 
     input wire [7:0] din,
     output reg tx_done_tick,
+	 //output reg tx_parity,
     output wire tx
    );
 
    // symbolic state declaration
-   localparam [1:0]
-      IDLE  = 2'b00,
-      START = 2'b01,
-      DATA  = 2'b10,
-      STOP  = 2'b11;
+   localparam [2:0]
+      IDLE  = 3'b000,
+      START = 3'b001,
+      DATA  = 3'b010,
+      PARITY = 3'b100,
+		STOP  = 3'b011;
 
    // signal declaration
    reg [1:0] state_reg, state_next;
@@ -37,6 +39,7 @@ module uart_tx
             n_reg <= 0;
             b_reg <= 0;
             tx_reg <= 1'b1;
+				p_reg <= 0;
          end
       else
          begin
@@ -45,6 +48,7 @@ module uart_tx
             n_reg <= n_next;
             b_reg <= b_next;
             tx_reg <= tx_next;
+				p_reg <= p_next;
          end
 
    // FSMD next-state logic & functional units
@@ -55,7 +59,9 @@ module uart_tx
       s_next = s_reg;
       n_next = n_reg;
       b_next = b_reg;
-      tx_next = tx_reg ;
+      tx_next = tx_reg;
+	 p_next = p_reg;
+	//	tx_parity = 0; // instantiate output
       case (state_reg)
          IDLE:
             begin
@@ -76,14 +82,16 @@ module uart_tx
                         state_next = PARITY;
                         s_next = 0;
                         n_next = 0;
+				   p_next = 0;
                      end
                   else
                      s_next = s_reg + 1;
             end
-			PARITY:
          DATA:
             begin
                tx_next = b_reg[0];
+					if(tx_reg)
+						p_next = p_reg + 1; //update parity bit
                if (s_tick)
                   if (s_reg==15)
                      begin
@@ -97,6 +105,21 @@ module uart_tx
                   else
                      s_next = s_reg + 1;
             end
+			PARITY:
+				begin 
+					tx_next = p_reg;
+			//		tx_parity = p_reg;
+					if(s_tick)
+						begin 
+							if (s_reg == 15)
+								begin
+									s_next = 0;
+									state_next = STOP;
+								end
+							else
+								s_next = s_reg + 1;
+						end
+				end
          STOP:
             begin
                tx_next = 1'b1;
@@ -109,9 +132,11 @@ module uart_tx
                   else
                      s_next = s_reg + 1;
             end
+			default: state_next = IDLE;
       endcase
    end
    // output
+	
    assign tx = tx_reg;
 
 endmodule

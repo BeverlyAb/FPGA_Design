@@ -1,4 +1,4 @@
-//Listing 8.1
+//UART_rx
 module uart_rx
    #(
      parameter DBIT = 8,     // # DATA bits
@@ -17,7 +17,7 @@ module uart_rx
       IDLE  = 3'b000,
       START = 3'b001,
       DATA  = 3'b010,
-      PARITY = 3'b100;
+      PARITY = 3'b100,
 		STOP  = 3'b011;
 		
    // signal declaration
@@ -56,6 +56,8 @@ module uart_rx
       s_next = s_reg;
       n_next = n_reg;
       b_next = b_reg;
+		p_next = p_reg;
+		trans_parity = 0;
       case (state_reg)
          IDLE:
             if (~rx)
@@ -70,6 +72,7 @@ module uart_rx
                      state_next = DATA;
                      s_next = 0;
                      n_next = 0;
+				p_next = 0;
                   end
                else
                   s_next = s_reg + 1;
@@ -107,6 +110,7 @@ module uart_rx
                   end
                else
                   s_next = s_reg + 1;
+			default: state_next = IDLE;
       endcase
    end
    // output

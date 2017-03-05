@@ -1,5 +1,6 @@
-//UART_top
-module uart
+// UART w/Parity completed
+/////////////////////////////////////////////////////
+module uart_with_parity
    #( // Default setting:
       // 19,200 baud, 8 data bits, 1 stop bit, 2^2 FIFO
       parameter DBIT = 8,     // # data bits
@@ -15,15 +16,15 @@ module uart
     input wire clk, reset,
     input wire rd_uart, wr_uart, rx,
     input wire [7:0] w_data,
-    output wire tx_full, rx_empty, tx,
-    output wire [7:0] r_data,
-	 output wire err
+    output wire tx_full, rx_empty, tx, error,
+    output wire [7:0] r_data
    );
 
    // signal declaration
    wire tick, rx_done_tick, tx_done_tick;
    wire tx_empty, tx_fifo_not_empty;
    wire [7:0] tx_fifo_out, rx_data_out;
+	wire parity;
 
    //body
    mod_m_counter #(.M(DVSR), .N(DVSR_BIT)) baud_gen_unit
@@ -31,7 +32,7 @@ module uart
 
    uart_rx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) uart_rx_unit
       (.clk(clk), .reset(reset), .rx(rx), .s_tick(tick),
-       .rx_done_tick(rx_done_tick),.error(err), .dout(rx_data_out));
+       .rx_done_tick(rx_done_tick),.error(parity), .dout(rx_data_out));
 
    fifo #(.B(DBIT), .W(FIFO_W)) fifo_rx_unit
       (.clk(clk), .reset(reset), .rd(rd_uart),
@@ -46,7 +47,7 @@ module uart
    uart_tx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) uart_tx_unit
       (.clk(clk), .reset(reset), .tx_START(tx_fifo_not_empty),
        .s_tick(tick), .din(tx_fifo_out),
-       .tx_done_tick(tx_done_tick),.tx(tx));
+       .tx_done_tick(tx_done_tick), .tx_parity(parity), .tx(tx));
 
    assign tx_fifo_not_empty = ~tx_empty;
 
