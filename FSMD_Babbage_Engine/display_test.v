@@ -24,9 +24,11 @@ module display_test;
 	initial begin
 		// Initialize Inputs
 		clk = 0;
-		data = 12'd4;
-
-		// Wait 100 ns for global reset to finish
+		data = 12'd0;
+		
+	# 10 data = 12'd1;
+	# 10 data = 12'd2;
+ 		// Wait 100 ns for global reset to finish
 		#100;
         
 		// Add stimulus here
