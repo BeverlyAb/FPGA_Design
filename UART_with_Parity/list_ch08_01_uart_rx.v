@@ -21,7 +21,7 @@ module uart_rx
 		STOP  = 3'b100;
 		
    // signal declaration
-   reg [1:0] state_reg, state_next;
+   reg [2:0] state_reg, state_next;
    reg [3:0] s_reg, s_next;
    reg [2:0] n_reg, n_next;
    reg [7:0] b_reg, b_next;
@@ -80,27 +80,25 @@ module uart_rx
                   begin
                      s_next = 0;
                      b_next = {rx, b_reg[7:1]};
-							p_next = p_reg + 1;
-							//p_next = (rx) ? p_reg + 1: p_reg;
+							p_next = (rx) ? p_reg + 1: p_reg;
                      if (n_reg==(DBIT-1))
-                  //      state_next = PARITY ;
-									state_next = STOP;
+                        state_next = PARITY ;
 							else
                         n_next = n_reg + 1;
                    end
                else
                   s_next = s_reg + 1;
-	/*		PARITY:
+			PARITY:
 				if(s_tick)
 					if(s_reg ==15)
 						begin
 							s_next = 0;
 							state_next = STOP;
-						//	error = (p_reg  == rx) ? 0 : 1; //1 - parity mismatch, 0 parity match
+							error = (p_reg  == rx) ? 0 : 1; //1 - parity mismatch, 0 parity match
 						end
 					else
 						s_next = s_reg + 1;
-     */    STOP:
+         STOP:
             if (s_tick)
                if (s_reg==(SB_TICK-1))
                   begin

@@ -21,7 +21,7 @@ module uart_tx
 		STOP  = 3'b011;
 
    // signal declaration
-   reg [1:0] state_reg, state_next;
+   reg [2:0] state_reg, state_next;
    reg [3:0] s_reg, s_next;
    reg [2:0] n_reg, n_next;
    reg [7:0] b_reg, b_next;
@@ -87,23 +87,21 @@ module uart_tx
          DATA:
             begin
                tx_next = b_reg[0];
-					p_next =  p_reg + 1;
-					//p_next = (tx_reg) ? p_reg + 1 : p_reg; //update parity bit
+					p_next = (tx_reg) ? p_reg + 1 : p_reg; //update parity bit
                if (s_tick)
                   if (s_reg==15)
                      begin
                         s_next = 0;
                         b_next = b_reg >> 1;
                         if (n_reg==(DBIT-1)) 
-                  //         state_next = PARITY;
-									state_next = STOP;
+                           state_next = PARITY;
 								else
                            n_next = n_reg + 1;
                      end
                   else
                      s_next = s_reg + 1;
             end
-		/*	PARITY:
+			PARITY:
 				begin 
 					tx_next = p_reg;
 					if(s_tick)
@@ -114,7 +112,7 @@ module uart_tx
 							end
 						else
 							s_next = s_reg + 1;
-				end */
+				end 
          STOP:
             begin
                tx_next = 1'b1;
