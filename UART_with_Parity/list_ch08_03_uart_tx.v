@@ -1,4 +1,4 @@
-//UART_tx
+//Listing 8.3
 module uart_tx
    #(
      parameter DBIT = 8,     // # DATA bits
@@ -6,10 +6,9 @@ module uart_tx
    )
    (
     input wire clk, reset,
-    input wire tx_START, s_tick, 
+    input wire tx_start, s_tick, 
     input wire [7:0] din,
     output reg tx_done_tick,
-	 //output reg tx_parity,
     output wire tx
    );
 
@@ -60,13 +59,12 @@ module uart_tx
       n_next = n_reg;
       b_next = b_reg;
       tx_next = tx_reg;
-	 p_next = p_reg;
-	//	tx_parity = 0; // instantiate output
+		p_next = p_reg;
       case (state_reg)
          IDLE:
             begin
                tx_next = 1'b1;
-               if (tx_START)
+               if (tx_start)
                   begin
                      state_next = START;
                      s_next = 0;
@@ -79,10 +77,9 @@ module uart_tx
                if (s_tick)
                   if (s_reg==15)
                      begin
-                        state_next = PARITY;
+                        state_next = DATA;
                         s_next = 0;
                         n_next = 0;
-				   p_next = 0;
                      end
                   else
                      s_next = s_reg + 1;
@@ -90,36 +87,34 @@ module uart_tx
          DATA:
             begin
                tx_next = b_reg[0];
-					if(tx_reg)
-						p_next = p_reg + 1; //update parity bit
+					p_next =  p_reg + 1;
+					//p_next = (tx_reg) ? p_reg + 1 : p_reg; //update parity bit
                if (s_tick)
                   if (s_reg==15)
                      begin
                         s_next = 0;
                         b_next = b_reg >> 1;
-                        if (n_reg==(DBIT-1))
-                           state_next = STOP ;
-                        else
+                        if (n_reg==(DBIT-1)) 
+                  //         state_next = PARITY;
+									state_next = STOP;
+								else
                            n_next = n_reg + 1;
                      end
                   else
                      s_next = s_reg + 1;
             end
-			PARITY:
+		/*	PARITY:
 				begin 
 					tx_next = p_reg;
-			//		tx_parity = p_reg;
 					if(s_tick)
-						begin 
-							if (s_reg == 15)
-								begin
-									s_next = 0;
-									state_next = STOP;
-								end
-							else
-								s_next = s_reg + 1;
-						end
-				end
+						if (s_reg == 15)
+							begin
+								s_next = 0;
+								state_next = STOP;
+							end
+						else
+							s_next = s_reg + 1;
+				end */
          STOP:
             begin
                tx_next = 1'b1;
@@ -132,7 +127,14 @@ module uart_tx
                   else
                      s_next = s_reg + 1;
             end
-			default: state_next = IDLE;
+			default: begin
+				state_next = IDLE;
+				s_next = 0;
+            n_next = 0;
+            b_next = 0;
+            tx_next = 1'b1;
+				p_next = 0;
+			end
       endcase
    end
    // output
