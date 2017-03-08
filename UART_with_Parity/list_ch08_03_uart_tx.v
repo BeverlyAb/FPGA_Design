@@ -8,7 +8,8 @@ module uart_tx
     input wire clk, reset,
     input wire tx_start, s_tick, 
     input wire [7:0] din,
-    output reg tx_done_tick,
+    output reg tx_done_tick, 
+	 output wire tx_parity,
     output wire tx
    );
 
@@ -27,6 +28,7 @@ module uart_tx
    reg [7:0] b_reg, b_next;
    reg tx_reg, tx_next;
 	reg p_reg, p_next;
+//reg par;
 
    // body
    // FSMD state & DATA registers
@@ -60,6 +62,7 @@ module uart_tx
       b_next = b_reg;
       tx_next = tx_reg;
 		p_next = p_reg;
+	//	tx_parity = 0;
       case (state_reg)
          IDLE:
             begin
@@ -88,7 +91,8 @@ module uart_tx
             begin
                tx_next = b_reg[0];
 					p_next = (tx_reg) ? p_reg + 1 : p_reg; //update parity bit
-               if (s_tick)
+				//	p_next = ^p_reg ^ 0;
+				 if (s_tick)
                   if (s_reg==15)
                      begin
                         s_next = 0;
@@ -109,6 +113,7 @@ module uart_tx
 							begin
 								s_next = 0;
 								state_next = STOP;
+						//		par = p_reg;
 							end
 						else
 							s_next = s_reg + 1;
@@ -136,7 +141,7 @@ module uart_tx
       endcase
    end
    // output
-	
    assign tx = tx_reg;
+	assign tx_parity = p_reg;
 
 endmodule

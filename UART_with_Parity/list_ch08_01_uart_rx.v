@@ -8,6 +8,7 @@ module uart_rx
     input wire clk, reset,
     input wire rx, s_tick,
     output reg rx_done_tick,
+	 output wire rx_parity,
 	 output reg error,		//1 - parity mismatch, 0 parity match
     output wire [7:0] dout
    );
@@ -26,6 +27,7 @@ module uart_rx
    reg [2:0] n_reg, n_next;
    reg [7:0] b_reg, b_next;
 	reg p_reg, p_next;	//rolling values, between 0 and 1
+	//reg par = 0;
    // body
    // FSMD state & DATA registers
    always @(posedge clk, posedge reset)
@@ -57,6 +59,7 @@ module uart_rx
 		p_next = p_reg;
 		//instantiate output
 		error = 0;
+	//	rx_parity = 0;
       case (state_reg)
          IDLE:
             if (~rx)
@@ -80,6 +83,7 @@ module uart_rx
                   begin
                      s_next = 0;
                      b_next = {rx, b_reg[7:1]};
+							//p_next = ^p_reg ^ 0;
 							p_next = (rx) ? p_reg + 1: p_reg;
                      if (n_reg==(DBIT-1))
                         state_next = PARITY ;
@@ -94,6 +98,7 @@ module uart_rx
 						begin
 							s_next = 0;
 							state_next = STOP;
+							//par = p_reg;
 							error = (p_reg  == rx) ? 0 : 1; //1 - parity mismatch, 0 parity match
 						end
 					else
@@ -119,5 +124,6 @@ module uart_rx
    end
    // output
    assign dout = b_reg;
+	assign rx_parity = p_reg;
 	
 endmodule

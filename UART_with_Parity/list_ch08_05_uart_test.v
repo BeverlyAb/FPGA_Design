@@ -10,7 +10,7 @@ module uart_test
    );
 
    // signal declaration
-   wire tx_full, rx_empty, err, btn_tick;
+   wire tx_full, rx_empty, err, btn_tick, rx_partiy, tx_parity;
    wire [7:0] rec_data, rec_data1;
 
    // body
@@ -18,7 +18,7 @@ module uart_test
    uart uart_unit
       (.clk(clk), .reset(reset), .rd_uart(btn_tick),
        .wr_uart(btn_tick), .rx(rx), .w_data(rec_data1),
-       .tx_full(tx_full), .rx_empty(rx_empty),
+       .tx_full(tx_full), .rx_empty(rx_empty),.tx_parity(tx_parity),.rx_parity(rx_parity),
        .r_data(rec_data),.error(err), .tx(tx));
    // instantiate debounce circuit
    debounce btn_db_unit
@@ -29,6 +29,6 @@ module uart_test
    // LED display
    assign led = rec_data;
    assign an = 4'b1110;
-   assign sseg = {err, ~tx_full, 2'b11, ~rx_empty, 3'b111};
+   assign sseg = {~err, ~tx_full, rx_parity , 1'b1, ~rx_empty, 1'b1, tx_parity,1'b1};
 
 endmodule

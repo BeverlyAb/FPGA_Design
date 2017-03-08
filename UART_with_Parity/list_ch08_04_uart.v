@@ -15,7 +15,7 @@ module uart
     input wire clk, reset,
     input wire rd_uart, wr_uart, rx,
     input wire [7:0] w_data,
-    output wire tx_full, rx_empty, tx, error,
+    output wire tx_full, rx_empty, tx, error, tx_parity, rx_parity,
     output wire [7:0] r_data
    );
 
@@ -29,7 +29,7 @@ module uart
       (.clk(clk), .reset(reset), .q(), .max_tick(tick));
 
    uart_rx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) uart_rx_unit
-      (.clk(clk), .reset(reset), .rx(rx), .s_tick(tick),
+      (.clk(clk), .reset(reset), .rx(rx), .s_tick(tick), .rx_parity(rx_parity),
        .rx_done_tick(rx_done_tick), .error(error), .dout(rx_data_out));
 
    fifo #(.B(DBIT), .W(FIFO_W)) fifo_rx_unit
@@ -44,7 +44,7 @@ module uart
 
    uart_tx #(.DBIT(DBIT), .SB_TICK(SB_TICK)) uart_tx_unit
       (.clk(clk), .reset(reset), .tx_start(tx_fifo_not_empty),
-       .s_tick(tick), .din(tx_fifo_out),
+       .s_tick(tick), .din(tx_fifo_out), .tx_parity(tx_parity),
        .tx_done_tick(tx_done_tick), .tx(tx));
 
    assign tx_fifo_not_empty = ~tx_empty;

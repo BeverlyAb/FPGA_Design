@@ -17,11 +17,10 @@ module uart_test_sim;
 	wire tx_full;
 	wire rx_empty;
 	wire tx;
-	wire error;
 	wire [7:0] r_data;
 
 	// Instantiate the Unit Under Test (UUT)
-	uart_with_parity uut (
+	uart uut (
 		.clk(clk), 
 		.reset(reset), 
 		.rd_uart(rd_uart), 
@@ -31,7 +30,6 @@ module uart_test_sim;
 		.tx_full(tx_full), 
 		.rx_empty(rx_empty), 
 		.tx(tx), 
-		.error(error), 
 		.r_data(r_data)
 	);
 
@@ -48,14 +46,14 @@ module uart_test_sim;
 		rx = 1;
 		wr_uart = 1;
 		
-		#1wr_uart = 0;
-		 rd_uart = 1;
+		#1wr_uart = 1;
+		 rd_uart = 0;
 		
 		#1rd_uart = 0;
 
 	end
 	initial begin:stop
-		#20 $stop;
+		#60 $stop;
 	end
 	initial begin:clock
 		forever #1 clk = ~clk;
