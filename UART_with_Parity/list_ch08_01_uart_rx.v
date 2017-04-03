@@ -8,6 +8,8 @@ module uart_rx
     input wire clk, reset,
     input wire rx, s_tick,
     output reg rx_done_tick,
+    output wire rx_parity,
+    output wire tx_parity,
     output reg error,		//1 - parity mismatch, 0 parity match
     output wire [7:0] dout
    );
@@ -18,7 +20,7 @@ module uart_rx
       START = 3'b001,
       DATA  = 3'b010,
       PARITY = 3'b011,
-      STOP  = 3'b100;
+		STOP  = 3'b100;
 		
    // signal declaration
    reg [2:0] state_reg, state_next;
@@ -26,7 +28,9 @@ module uart_rx
    reg [2:0] n_reg, n_next;
    reg [7:0] b_reg, b_next;
    reg p_reg, p_next;	//rolling values, between 0 and 1
-   // body
+   reg tx_buf, tx_buf_next;
+  
+  // body
    // FSMD state & DATA registers
    always @(posedge clk, posedge reset)
       if (reset)
@@ -36,6 +40,7 @@ module uart_rx
             n_reg <= 0;
             b_reg <= 0;
 				p_reg <= 0;
+				tx_buf <= 0;
          end
       else
          begin
@@ -43,7 +48,8 @@ module uart_rx
             s_reg <= s_next;
             n_reg <= n_next;
             b_reg <= b_next;
-				p_reg <= p_next;
+	    p_reg <= p_next;
+	    tx_buf <= tx_buf_next;
          end
 
    // FSMD next-state logic
@@ -54,9 +60,10 @@ module uart_rx
       s_next = s_reg;
       n_next = n_reg;
       b_next = b_reg;
-		p_next = p_reg;
-		//instantiate output
-		error = 0;
+      p_next = p_reg;
+      tx_buf_next = tx_buf;
+      //instantiate output
+      error = 0;
       case (state_reg)
          IDLE:
             if (~rx)
@@ -71,6 +78,7 @@ module uart_rx
                      state_next = DATA;
                      s_next = 0;
                      n_next = 0;
+		     p_next = 0;
                   end
                else
                   s_next = s_reg + 1;
@@ -81,21 +89,26 @@ module uart_rx
                      s_next = 0;
                      b_next = {rx, b_reg[7:1]};
 		     p_next = (rx) ? p_reg + 1: p_reg;
-                     if (n_reg==(DBIT-1))
-                        state_next = PARITY ;
+                     if (n_reg==(DBIT-1)) 
+		       begin
+		         state_next = PARITY;
+			 tx_buf_next = 0;
+			 error = 0;
+	               end
 		     else
                         n_next = n_reg + 1;
                    end
                else
                   s_next = s_reg + 1;
-         PARITY:
+	  PARITY:
 	     if(s_tick)
-		if(s_reg ==15)
-		     begin
-		        s_next = 0;
-			state_next = STOP;
-			error = (p_reg  == rx) ? 0 : 1; //1 - parity mismatch, 0 parity match
-		     end
+	        if(s_reg ==15)
+		    begin
+		      s_next = 0;
+		      tx_buf_next = rx;
+		      state_next = STOP;
+		      error = (p_reg  == rx) ? 0 : 1; //1 - parity mismatch, 0 parity match
+		    end
 		else
 		     s_next = s_reg + 1;
          STOP:
@@ -107,17 +120,19 @@ module uart_rx
                   end
                else
                   s_next = s_reg + 1;
-	default: begin
-	     state_next = IDLE;
-	     rx_done_tick = 1'b0;
-	     s_next = 0;
-             n_next = 0;
-             b_next = 0;
-	     p_next = 0;
-	end
+         default: begin
+	    state_next = IDLE;
+	    rx_done_tick = 1'b0;
+	    s_next = 0;
+            n_next = 0;
+            b_next = 0;
+	    p_next = 0;
+         end
       endcase
    end
    // output
    assign dout = b_reg;
+   assign rx_parity = p_reg;
+   assign tx_parity = tx_buf;
 	
 endmodule
