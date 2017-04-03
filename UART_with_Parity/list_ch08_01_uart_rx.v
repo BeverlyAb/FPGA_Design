@@ -39,8 +39,8 @@ module uart_rx
             s_reg <= 0;
             n_reg <= 0;
             b_reg <= 0;
-				p_reg <= 0;
-				tx_buf <= 0;
+	    p_reg <= 0;
+	    tx_buf <= 0;
          end
       else
          begin
